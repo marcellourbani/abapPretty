@@ -1,7 +1,7 @@
 {
-  "name": "abapPretty",
+  "name": "abappretty",
   "description": "ABAP pretty printer - Command line utility to format ABAP code on a server",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Marcello Urbani @marcellourbani",
   "bin": {
     "abapPretty": "./bin/run"
@@ -13,6 +13,7 @@
     "@oclif/plugin-help": "^2.2.3",
     "abap-adt-api": "^1.3.0",
     "chalk": "^4.0.0",
+    "cli-ux": "^5.4.5",
     "conf": "^6.2.4",
     "tslib": "^1.11.1"
   },
@@ -22,6 +23,7 @@
     "@types/chai": "^4.2.11",
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.17.21",
+    "@types/request-debug": "^0.2.0",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-oclif": "^3.1.0",

@@ -3,43 +3,52 @@
 ABAP pretty printer - Command line utility to format ABAP code on a server
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![License](https://img.shields.io/npm/l/abapPretty.svg)](https://github.com/marcellourbani/abapPretty/blob/master/package.json)
+[![Version](https://img.shields.io/npm/v/abappretty.svg)](https://npmjs.org/package/abappretty)
+[![Downloads/week](https://img.shields.io/npm/dw/abappretty.svg)](https://npmjs.org/package/abappretty)
+[![License](https://img.shields.io/npm/l/abappretty.svg)](https://github.com/marcellourbani/abapPretty/blob/master/package.json)
 
 | :warning: WARNING: this will overwrite whole packages with a single invocation. Use at your own risk and MAKE BACKUPS |
 | --------------------------------------------------------------------------------------------------------------------- |
 
 
 <!-- toc -->
-* [abapPretty](#abappretty)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [abapPretty](#abappretty)
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
+
 ```sh-session
-$ npm install -g abapPretty
+$ npm install -g abappretty
 $ abapPretty COMMAND
 running command...
 $ abapPretty (-v|--version|version)
-abapPretty/0.0.0 linux-x64 node-v12.16.1
+abappretty/0.0.1 linux-x64 node-v12.16.1
 $ abapPretty --help [COMMAND]
 USAGE
   $ abapPretty COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-* [`abapPretty connection`](#abappretty-connection)
-* [`abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`](#abappretty-connectioncreate-id-baseurl-username-password)
-* [`abapPretty help [COMMAND]`](#abappretty-help-command)
-* [`abapPretty list ID OBJECTTYPE OBJECTNAME`](#abappretty-list-id-objecttype-objectname)
-* [`abapPretty prettyprint ID OBJECTTYPE OBJECTNAME`](#abappretty-prettyprint-id-objecttype-objectname)
-* [`abapPretty simulate ID OBJECTTYPE OBJECTNAME`](#abappretty-simulate-id-objecttype-objectname)
+
+- [abapPretty](#abappretty)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`abapPretty connection`](#abappretty-connection)
+  - [`abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`](#abappretty-connectioncreate-id-baseurl-username-password)
+  - [`abapPretty help [COMMAND]`](#abappretty-help-command)
+  - [`abapPretty list ID OBJECTTYPE OBJECTNAME`](#abappretty-list-id-objecttype-objectname)
+  - [`abapPretty prettyprint ID OBJECTTYPE OBJECTNAME`](#abappretty-prettyprint-id-objecttype-objectname)
+  - [`abapPretty simulate ID OBJECTTYPE OBJECTNAME`](#abappretty-simulate-id-objecttype-objectname)
 
 ## `abapPretty connection`
 
@@ -53,7 +62,7 @@ EXAMPLE
   $ apapPretty connection
 ```
 
-_See code: [src/commands/connection/index.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.0/src/commands/connection/index.ts)_
+_See code: [src/commands/connection/index.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.1/src/commands/connection/index.ts)_
 
 ## `abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`
 
@@ -73,7 +82,7 @@ EXAMPLE
   $ abapPretty login MYCONN http://myserver:8000 myuser mypass
 ```
 
-_See code: [src/commands/connection/create.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.0/src/commands/connection/create.ts)_
+_See code: [src/commands/connection/create.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.1/src/commands/connection/create.ts)_
 
 ## `abapPretty help [COMMAND]`
 
@@ -113,7 +122,7 @@ EXAMPLE
   $ abapPretty list MYCONN DEVC/K ZMYPACKAGE
 ```
 
-_See code: [src/commands/list.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.0/src/commands/list.ts)_
+_See code: [src/commands/list.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.1/src/commands/list.ts)_
 
 ## `abapPretty prettyprint ID OBJECTTYPE OBJECTNAME`
 
@@ -137,7 +146,7 @@ EXAMPLE
   $ abapPretty prettyprint MYCONN DEVC/K ZMYPACKAGE
 ```
 
-_See code: [src/commands/prettyprint.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.0/src/commands/prettyprint.ts)_
+_See code: [src/commands/prettyprint.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.1/src/commands/prettyprint.ts)_
 
 ## `abapPretty simulate ID OBJECTTYPE OBJECTNAME`
 
@@ -161,5 +170,6 @@ EXAMPLE
   $ abapPretty simulate MYCONN DEVC/K ZMYPACKAGE
 ```
 
-_See code: [src/commands/simulate.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.0/src/commands/simulate.ts)_
+_See code: [src/commands/simulate.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.1/src/commands/simulate.ts)_
+
 <!-- commandsstop -->
