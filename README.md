@@ -11,6 +11,13 @@ ABAP pretty printer - Command line utility to format ABAP code on a server
 | --------------------------------------------------------------------------------------------------------------------- |
 
 
+![prettyprint](https://user-images.githubusercontent.com/2453277/81149759-bbece980-8f76-11ea-8a6c-55acf6a2a90f.gif)
+Converted this:
+![before](https://user-images.githubusercontent.com/2453277/81147559-729a9b00-8f72-11ea-98a4-b18a220c06d3.png)
+
+Into this:
+![after](https://user-images.githubusercontent.com/2453277/81147793-f81e4b00-8f72-11ea-92bc-42844cd4f256.png)
+
 <!-- toc -->
 * [abapPretty](#abappretty)
 * [Usage](#usage)
