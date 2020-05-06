@@ -38,7 +38,7 @@ export default class Simulate extends Command {
         transport: flags.transport
       })
     } catch (error) {
-      this.log(error)
+      this.log(error.toString())
     }
   }
 }

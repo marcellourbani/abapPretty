@@ -39,7 +39,7 @@ export default class Login extends Command {
       saveConnection({ id, baseUrl, userName, password })
       this.log(`Connection ${id} created/updated`)
     } catch (error) {
-      this.log(error)
+      this.log(error.toString())
     }
   }
 }

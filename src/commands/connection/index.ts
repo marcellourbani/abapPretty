@@ -17,7 +17,7 @@ export default class LoginList extends Command {
         password: {}
       })
     } catch (error) {
-      this.log(error)
+      this.log(error.toString())
     }
   }
 }

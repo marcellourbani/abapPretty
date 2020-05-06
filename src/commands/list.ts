@@ -36,7 +36,7 @@ export default class List extends Command {
         url: {}
       })
     } catch (error) {
-      this.log(error)
+      this.log(error.toString())
     }
   }
 }

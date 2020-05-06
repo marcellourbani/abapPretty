@@ -39,6 +39,22 @@
       "program": "${workspaceFolder}/bin/run",
       "args": ["prettyprint", "NPL", "INTF/OI", "ZIWCI_DEMO_EXCEL_WDA01"],
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "class with transport",
+      "smartStep": true,
+      "program": "${workspaceFolder}/bin/run",
+      "args": [
+        "prettyprint",
+        "d1_3",
+        "CLAS/OC",
+        "/BTI/CL_JSON",
+        "-t",
+        "L01K900007"
+      ],
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

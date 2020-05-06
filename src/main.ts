@@ -2,7 +2,12 @@ import { cli } from "cli-ux"
 import { green } from "chalk"
 
 import { expand, AbapObject, AbapInclude } from "./lib/abap"
-import { ADTClient, session_types, AdtLock } from "abap-adt-api"
+import {
+  ADTClient,
+  session_types,
+  AdtLock,
+  inactiveObjectsInResults
+} from "abap-adt-api"
 const tick = green("\u2713")
 
 export interface Options {
@@ -14,9 +19,43 @@ const tryLock = async (client: ADTClient, url: string) => {
   try {
     return await client.lock(url)
   } catch (error) {
-    if (error.type === "ExceptionResourceNoAccess") return
+    if (
+      error?.type === "ExceptionResourceNoAccess" &&
+      !error?.message.match(/locked/i)
+    )
+      return
     throw error
   }
+}
+
+function validateTransport(lock: AdtLock, key: string, transport?: string) {
+  if (lock.IS_LOCAL && transport)
+    throw new Error(`Object ${key} is local, can't use ${transport}`)
+
+  if (!lock.IS_LOCAL && !transport)
+    throw new Error(
+      `Object ${key} requires a transport ${
+        lock.CORRNR ? `(locked in ${lock.CORRNR})` : ""
+      }`
+    )
+
+  if (transport !== lock.CORRNR && !lock.IS_LOCAL && lock.CORRNR)
+    throw new Error(
+      `Object ${key} locked in transport ${lock.CORRNR} can't use ${transport}`
+    )
+}
+
+async function activate(client: ADTClient, incl: AbapInclude) {
+  if (incl.type === "PROG/I") {
+    const main = await client.statelessClone.mainPrograms(incl.metaUrl)
+    return client.activate(incl.name, incl.sourceUrl, main?.[0]["adtcore:uri"])
+  }
+  const active = await client.activate(incl.name, incl.sourceUrl)
+  if (active.inactive.length > 0) {
+    const inactives = inactiveObjectsInResults(active)
+    return client.activate(inactives)
+  }
+  return active
 }
 
 async function write(
@@ -28,10 +67,7 @@ async function write(
 ) {
   const key = `${incl.type} ${incl.name}`
   if (!lock.LOCK_HANDLE) throw new Error(`Failed to lock ${key}`)
-  if (transport && lock.CORRNR && lock.CORRNR !== transport)
-    throw new Error(
-      `Object ${key} locked in transport ${lock.CORRNR} can't use ${transport}`
-    )
+  validateTransport(lock, key, transport)
   cli.action.start(`\t${key}`, ` Writing...`)
   if (!test)
     await client.setObjectSource(
@@ -44,10 +80,11 @@ async function write(
   await client.unLock(incl.sourceUrl, lock.LOCK_HANDLE)
   cli.action.start(`\t${key}`, ` Activating...`)
   if (!test) {
-    if (incl.type === "PROG/I") {
-      const main = await client.statelessClone.mainPrograms(incl.metaUrl)
-      await client.activate(incl.name, incl.sourceUrl, main?.[0]["adtcore:uri"])
-    } else await client.activate(incl.name, incl.sourceUrl)
+    const active = await activate(client, incl)
+    if (active.success === false)
+      throw new Error(
+        active.messages[0]?.shortText || `Failed to activate ${key}`
+      )
   }
   cli.action.start(`\t${tick}${key}`)
 }

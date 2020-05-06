@@ -2,7 +2,7 @@
 import { ADTClient, Node, isClassStructure } from "abap-adt-api"
 
 export const PACKAGE = "DEVC/K"
-const PACKAGETYPE = { desc: "Class", type: PACKAGE }
+const PACKAGETYPE = { desc: "Package", type: PACKAGE }
 export const treatableTypes = [
   { desc: "Class", type: "CLAS/OC" },
   { desc: "FunctionFroup", type: "FUGR/F" },
