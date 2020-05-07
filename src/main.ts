@@ -14,120 +14,142 @@ export interface Options {
   test: boolean
   transport?: string
 }
-
-const tryLock = async (client: ADTClient, url: string) => {
-  try {
-    return await client.lock(url)
-  } catch (error) {
-    if (
-      error?.type === "ExceptionResourceNoAccess" &&
-      !error?.message.match(/locked/i)
-    )
-      return
-    throw error
-  }
+interface Status {
+  currentObject?: AbapObject
+  currentInclude?: AbapInclude
+  processedObjects: number
+  processedIncludes: number
 }
+export class Main {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(private client: ADTClient) {}
 
-function validateTransport(lock: AdtLock, key: string, transport?: string) {
-  if (lock.IS_LOCAL && transport)
-    throw new Error(`Object ${key} is local, can't use ${transport}`)
-
-  if (!lock.IS_LOCAL && !transport)
-    throw new Error(
-      `Object ${key} requires a transport ${
-        lock.CORRNR ? `(locked in ${lock.CORRNR})` : ""
-      }`
-    )
-
-  if (transport !== lock.CORRNR && !lock.IS_LOCAL && lock.CORRNR)
-    throw new Error(
-      `Object ${key} locked in transport ${lock.CORRNR} can't use ${transport}`
-    )
-}
-
-async function activate(client: ADTClient, incl: AbapInclude) {
-  if (incl.type === "PROG/I") {
-    const main = await client.statelessClone.mainPrograms(incl.metaUrl)
-    return client.activate(incl.name, incl.sourceUrl, main?.[0]["adtcore:uri"])
+  private readonly status: Status = {
+    processedIncludes: 0,
+    processedObjects: 0
   }
-  const active = await client.activate(incl.name, incl.sourceUrl)
-  if (active.inactive.length > 0) {
-    const inactives = inactiveObjectsInResults(active)
-    return client.activate(inactives)
-  }
-  return active
-}
 
-async function write(
-  client: ADTClient,
-  incl: AbapInclude,
-  formatted: string,
-  lock: AdtLock,
-  { test, transport }: Options
-) {
-  const key = `${incl.type} ${incl.name}`
-  if (!lock.LOCK_HANDLE) throw new Error(`Failed to lock ${key}`)
-  validateTransport(lock, key, transport)
-  cli.action.start(`\t${key}`, ` Writing...`)
-  if (!test)
-    await client.setObjectSource(
-      incl.sourceUrl,
-      formatted,
-      lock.LOCK_HANDLE,
-      transport
-    )
-  cli.action.start(`\t${key}`, ` Unlocking...`)
-  await client.unLock(incl.sourceUrl, lock.LOCK_HANDLE)
-  cli.action.start(`\t${key}`, ` Activating...`)
-  if (!test) {
-    const active = await activate(client, incl)
-    if (active.success === false)
+  private async tryLock(url: string) {
+    try {
+      return await this.client.lock(url)
+    } catch (error) {
+      if (
+        error?.type === "ExceptionResourceNoAccess" &&
+        !error?.message.match(/locked/i)
+      )
+        return
+      throw error
+    }
+  }
+
+  private validateTransport(lock: AdtLock, key: string, transport?: string) {
+    if (lock.IS_LOCAL && transport)
+      throw new Error(`Object ${key} is local, can't use ${transport}`)
+
+    if (!lock.IS_LOCAL && !transport)
       throw new Error(
-        active.messages[0]?.shortText || `Failed to activate ${key}`
+        `Object ${key} requires a transport ${
+          lock.CORRNR ? `(locked in ${lock.CORRNR})` : ""
+        }`
+      )
+
+    if (transport !== lock.CORRNR && !lock.IS_LOCAL && lock.CORRNR)
+      throw new Error(
+        `Object ${key} locked in transport ${lock.CORRNR} can't use ${transport}`
       )
   }
-  cli.action.start(`\t${tick}${key}`)
-}
 
-async function processInclude(
-  client: ADTClient,
-  incl: AbapInclude,
-  options: Options
-) {
-  const key = `${incl.type} ${incl.name}`
-  cli.action.start(`\t${key}`, ` Reading...`)
-  const source = await client.statelessClone.getObjectSource(incl.sourceUrl)
-  cli.action.start(`\t${key}`, ` Formatting...`)
-  const formatted = await client.statelessClone.prettyPrinter(source)
-  if (formatted === source) cli.action.start(`\t${tick}${key} (unchanged)`)
-  else {
-    cli.action.start(`\t${key}`, ` Locking...`)
-    const lock = await tryLock(client, incl.sourceUrl)
-    if (lock) {
-      await write(client, incl, formatted, lock, options)
-    } else cli.action.start(`\t${tick}${key} is generated, skipped`)
+  private async activate(incl: AbapInclude) {
+    if (incl.type === "PROG/I") {
+      const main = await this.client.statelessClone.mainPrograms(incl.metaUrl)
+      return this.client.activate(
+        incl.name,
+        incl.sourceUrl,
+        main?.[0]["adtcore:uri"]
+      )
+    }
+    const active = await this.client.activate(incl.name, incl.sourceUrl)
+    if (active.inactive.length > 0) {
+      const inactives = inactiveObjectsInResults(active)
+      return this.client.activate(inactives)
+    }
+    return active
   }
 
-  cli.action.stop()
-}
-
-export async function processObjects(
-  client: ADTClient,
-  objects: AbapObject[],
-  options: Options
-) {
-  client.stateful = session_types.stateful
-  try {
-    for (const o of objects) {
-      cli.action.start(`${o.type} ${o.name}`)
-      const includes = await expand(client, o)
-      cli.action.start(`${tick}${o.type} ${o.name}`)
-      cli.action.stop()
-      for (const incl of includes) await processInclude(client, incl, options)
+  private async write(
+    incl: AbapInclude,
+    formatted: string,
+    lock: AdtLock,
+    { test, transport }: Options
+  ) {
+    const key = `${incl.type} ${incl.name}`
+    if (!lock.LOCK_HANDLE) throw new Error(`Failed to lock ${key}`)
+    this.validateTransport(lock, key, transport)
+    cli.action.start(`\t${key}`, ` Writing...`)
+    if (!test)
+      await this.client.setObjectSource(
+        incl.sourceUrl,
+        formatted,
+        lock.LOCK_HANDLE,
+        transport
+      )
+    cli.action.start(`\t${key}`, ` Unlocking...`)
+    await this.client.unLock(incl.sourceUrl, lock.LOCK_HANDLE)
+    cli.action.start(`\t${key}`, ` Activating...`)
+    if (!test) {
+      const active = await this.activate(incl)
+      if (active.success === false)
+        throw new Error(
+          active.messages[0]?.shortText || `Failed to activate ${key}`
+        )
     }
-  } catch (error) {
-    client.stateful = session_types.stateless
-    await client.dropSession()
-    throw error
+    cli.action.start(`\t${tick}${key}`)
+  }
+
+  private async processInclude(incl: AbapInclude, options: Options) {
+    this.status.currentInclude = incl
+    const key = `${incl.type} ${incl.name}`
+    cli.action.start(`\t${key}`, ` Reading...`)
+    const source = await this.client.statelessClone.getObjectSource(
+      incl.sourceUrl
+    )
+    cli.action.start(`\t${key}`, ` Formatting...`)
+    const formatted = await this.client.statelessClone.prettyPrinter(source)
+    if (formatted === source) cli.action.start(`\t${tick}${key} (unchanged)`)
+    else {
+      cli.action.start(`\t${key}`, ` Locking...`)
+      const lock = await this.tryLock(incl.sourceUrl)
+      if (lock) {
+        await this.write(incl, formatted, lock, options)
+      } else cli.action.start(`\t${tick}${key} is generated, skipped`)
+    }
+
+    cli.action.stop()
+    this.status.processedIncludes++
+    this.status.currentInclude = undefined
+  }
+
+  public async processObjects(objects: AbapObject[], options: Options) {
+    this.client.stateful = session_types.stateful
+    try {
+      for (const o of objects) {
+        this.status.currentObject = o
+        cli.action.start(`${o.type} ${o.name}`)
+        const includes = await expand(this.client, o)
+        cli.action.start(`${tick}${o.type} ${o.name}`)
+        cli.action.stop()
+        for (const incl of includes) await this.processInclude(incl, options)
+        this.status.processedObjects++
+      }
+    } catch (error) {
+      this.client.stateful = session_types.stateless
+      await this.client.dropSession()
+      const { currentInclude, currentObject } = this.status
+      const ref = currentInclude
+        ? `include ${currentInclude.type} ${currentInclude.name}`
+        : `object ${currentObject?.type} ${currentObject?.name}`
+      cli.action.start(`Error processing ${ref}`)
+      throw error
+    }
   }
 }

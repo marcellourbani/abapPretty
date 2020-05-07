@@ -10,6 +10,13 @@ ABAP pretty printer - Command line utility to format ABAP code on a server
 | :warning: WARNING: this will overwrite whole packages with a single invocation. Use at your own risk and MAKE BACKUPS |
 | --------------------------------------------------------------------------------------------------------------------- |
 
+
+<!-- toc -->
+* [abapPretty](#abappretty)
+* [Usage](#usage)
+* [Commands](#commands)
+<!-- tocstop -->
+
 ![prettyprint](https://user-images.githubusercontent.com/2453277/81149759-bbece980-8f76-11ea-8a6c-55acf6a2a90f.gif)
 
 Converted this:
@@ -19,12 +26,6 @@ Converted this:
 Into this:
 
 ![after](https://user-images.githubusercontent.com/2453277/81147793-f81e4b00-8f72-11ea-92bc-42844cd4f256.png)
-
-<!-- toc -->
-* [abapPretty](#abappretty)
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
 
 # Usage
 
@@ -48,9 +49,9 @@ USAGE
 * [`abapPretty connection`](#abappretty-connection)
 * [`abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`](#abappretty-connectioncreate-id-baseurl-username-password)
 * [`abapPretty help [COMMAND]`](#abappretty-help-command)
-* [`abapPretty list ID OBJECTTYPE OBJECTNAME`](#abappretty-list-id-objecttype-objectname)
-* [`abapPretty prettyprint ID OBJECTTYPE OBJECTNAME`](#abappretty-prettyprint-id-objecttype-objectname)
-* [`abapPretty simulate ID OBJECTTYPE OBJECTNAME`](#abappretty-simulate-id-objecttype-objectname)
+* [`abapPretty list OBJECTTYPE OBJECTNAME`](#abappretty-list-objecttype-objectname)
+* [`abapPretty prettyprint OBJECTTYPE OBJECTNAME`](#abappretty-prettyprint-objecttype-objectname)
+* [`abapPretty simulate OBJECTTYPE OBJECTNAME`](#abappretty-simulate-objecttype-objectname)
 * [`abapPretty supportedtypes`](#abappretty-supportedtypes)
 
 ## `abapPretty connection`
@@ -104,22 +105,29 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
 
-## `abapPretty list ID OBJECTTYPE OBJECTNAME`
+## `abapPretty list OBJECTTYPE OBJECTNAME`
 
 List objects that would be updated
 
 ```
 USAGE
-  $ abapPretty list ID OBJECTTYPE OBJECTNAME
+  $ abapPretty list OBJECTTYPE OBJECTNAME
 
 ARGUMENTS
-  ID          connection ID
   OBJECTTYPE  Base object type
   OBJECTNAME  Base object name
 
 OPTIONS
-  -p, --password=password  Password
-  -r, --recursive          Password
+  -C, --client=client                            SAP client to connect to
+  -P, --certpath=certpath                        Path to SSL certificate
+  -P, --port=port                                Port to connect to
+  -c, --connectionId=connectionId                connection ID
+  -h, --ashost=ashost                            SAP hostname
+  -n, --no-ssl=no-ssl                            Don't use SSL
+  -p, --password=password                        Password
+  -r, --recursive                                Expand subpackages
+  -s, --skip-ssl-validation=skip-ssl-validation  Don't validate SSL certificate - DANGEROUS
+  -u, --user=user                                Username
 
 EXAMPLE
   $ abapPretty list MYCONN DEVC/K ZMYPACKAGE
@@ -127,23 +135,30 @@ EXAMPLE
 
 _See code: [src/commands/list.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.2/src/commands/list.ts)_
 
-## `abapPretty prettyprint ID OBJECTTYPE OBJECTNAME`
+## `abapPretty prettyprint OBJECTTYPE OBJECTNAME`
 
 Pretty prints every supported include file in the selected range
 
 ```
 USAGE
-  $ abapPretty prettyprint ID OBJECTTYPE OBJECTNAME
+  $ abapPretty prettyprint OBJECTTYPE OBJECTNAME
 
 ARGUMENTS
-  ID          connection ID
   OBJECTTYPE  Base object type
   OBJECTNAME  Base object name
 
 OPTIONS
-  -p, --password=password    Password
-  -r, --recursive            Password
-  -t, --transport=transport  Transport
+  -C, --client=client                            SAP client to connect to
+  -P, --certpath=certpath                        Path to SSL certificate
+  -P, --port=port                                Port to connect to
+  -c, --connectionId=connectionId                connection ID
+  -h, --ashost=ashost                            SAP hostname
+  -n, --no-ssl=no-ssl                            Don't use SSL
+  -p, --password=password                        Password
+  -r, --recursive                                Expand subpackages
+  -s, --skip-ssl-validation=skip-ssl-validation  Don't validate SSL certificate - DANGEROUS
+  -t, --transport=transport                      Transport
+  -u, --user=user                                Username
 
 EXAMPLE
   $ abapPretty prettyprint MYCONN DEVC/K ZMYPACKAGE
@@ -151,23 +166,30 @@ EXAMPLE
 
 _See code: [src/commands/prettyprint.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.2/src/commands/prettyprint.ts)_
 
-## `abapPretty simulate ID OBJECTTYPE OBJECTNAME`
+## `abapPretty simulate OBJECTTYPE OBJECTNAME`
 
 Simulate updates: perform all actions except writing the formatted source and activating
 
 ```
 USAGE
-  $ abapPretty simulate ID OBJECTTYPE OBJECTNAME
+  $ abapPretty simulate OBJECTTYPE OBJECTNAME
 
 ARGUMENTS
-  ID          connection ID
   OBJECTTYPE  Base object type
   OBJECTNAME  Base object name
 
 OPTIONS
-  -p, --password=password    Password
-  -r, --recursive            Password
-  -t, --transport=transport  Transport
+  -C, --client=client                            SAP client to connect to
+  -P, --certpath=certpath                        Path to SSL certificate
+  -P, --port=port                                Port to connect to
+  -c, --connectionId=connectionId                connection ID
+  -h, --ashost=ashost                            SAP hostname
+  -n, --no-ssl=no-ssl                            Don't use SSL
+  -p, --password=password                        Password
+  -r, --recursive                                Expand subpackages
+  -s, --skip-ssl-validation=skip-ssl-validation  Don't validate SSL certificate - DANGEROUS
+  -t, --transport=transport                      Transport
+  -u, --user=user                                Username
 
 EXAMPLE
   $ abapPretty simulate MYCONN DEVC/K ZMYPACKAGE

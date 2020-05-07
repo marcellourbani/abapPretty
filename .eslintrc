@@ -12,6 +12,8 @@
     "indent": "off",
     "max-params": "off",
     "no-await-in-loop": "off",
-    "no-implicit-coercion": "off"
+    "no-implicit-coercion": "off",
+    "operator-linebreak": "off",
+    "no-useless-constructor": "off"
   }
 }

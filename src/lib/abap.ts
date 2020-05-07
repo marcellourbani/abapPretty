@@ -137,7 +137,8 @@ async function expandFunc(client: ADTClient, name: string, metaUrl: string) {
   const children: AbapInclude[] = []
 
   for (const n of nodes.filter(filtFunc)) {
-    const structure = await client.statelessClone.objectStructure(n.OBJECT_URI)
+    const base = n.OBJECT_URI.replace(/\/source\/main/i, "")
+    const structure = await client.statelessClone.objectStructure(base)
     const sourceUrl = ADTClient.mainInclude(structure, true)
     children.push({
       type: n.OBJECT_TYPE,

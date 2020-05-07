@@ -10,7 +10,23 @@
       "name": "list package recursively",
       "smartStep": true,
       "program": "${workspaceFolder}/bin/run",
-      "args": ["list", "NPL", "DEVC/K", "$ABAPGIT", "-r"],
+      "args": ["list", "-c", "NPL", "DEVC/K", "$ABAPGIT", "-r"],
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "list package with environment login",
+      "smartStep": true,
+      "program": "${workspaceFolder}/bin/run",
+      "env": {
+        "SAP_ASHOST": "localhost",
+        "SAP_PORT": "8000",
+        "SAP_USER": "developer",
+        "SAP_PASSWORD": "wrong", // will fail, but that's ok. Just don't lock yourself!
+        "SAP_SSL": "no"
+      },
+      "args": ["list", "DEVC/K", "$ABAPGIT"],
       "skipFiles": ["<node_internals>/**"]
     },
     {
@@ -19,7 +35,7 @@
       "name": "simulate FG",
       "smartStep": true,
       "program": "${workspaceFolder}/bin/run",
-      "args": ["simulate", "NPL", "FUGR/F", "ZABAPGIT_PARALLEL"],
+      "args": ["simulate", "-c", "NPL", "FUGR/F", "ZABAPGIT_PARALLEL"],
       "skipFiles": ["<node_internals>/**"]
     },
     {
@@ -28,7 +44,13 @@
       "name": "format include",
       "smartStep": true,
       "program": "${workspaceFolder}/bin/run",
-      "args": ["prettyprint", "NPL", "PROG/I", "ZDEMO_EXCEL_OUTPUTOPT_INCL"],
+      "args": [
+        "prettyprint",
+        "-c",
+        "NPL",
+        "PROG/I",
+        "ZDEMO_EXCEL_OUTPUTOPT_INCL"
+      ],
       "skipFiles": ["<node_internals>/**"]
     },
     {
@@ -37,22 +59,23 @@
       "name": "process generated code",
       "smartStep": true,
       "program": "${workspaceFolder}/bin/run",
-      "args": ["prettyprint", "NPL", "INTF/OI", "ZIWCI_DEMO_EXCEL_WDA01"],
+      "args": ["prettyprint", "-c", "NPL", "INTF/OI", "ZIWCI_DEMO_EXCEL_WDA01"],
       "skipFiles": ["<node_internals>/**"]
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "class with transport",
+      "name": "generated function group",
       "smartStep": true,
       "program": "${workspaceFolder}/bin/run",
       "args": [
         "prettyprint",
+        "-c",
         "d1_3",
-        "CLAS/OC",
-        "/BTI/CL_JSON",
+        "FUGR/F",
+        "/BTI/TE_AUTHGROUPS",
         "-t",
-        "L01K900007"
+        "L01K900010"
       ],
       "skipFiles": ["<node_internals>/**"]
     }

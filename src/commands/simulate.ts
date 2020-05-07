@@ -1,10 +1,9 @@
 import { Command } from "@oclif/command"
 import { cli } from "cli-ux"
-import { getConnection } from "../lib/connections"
 import { getClient, ALLCOMMONFLAGS, COMMONARGS } from "../lib/common"
 
 import { list } from "../lib/abap"
-import { processObjects } from "../main"
+import { Main } from "../main"
 
 export default class Simulate extends Command {
   static description =
@@ -20,11 +19,9 @@ export default class Simulate extends Command {
     const { args, flags } = this.parse(Simulate)
 
     try {
-      const { id = "", objectType = "", objectName = "" } = args
-      const connection = getConnection(id)
-      if (!connection) throw new Error(`Connection ${id} not defined`)
-      const client = await getClient(connection, flags.password)
-      if (!client) throw new Error(`Connection ${id} not valid`)
+      const { objectType = "", objectName = "" } = args
+      const client = await getClient(flags)
+      const main = new Main(client)
       const objects = await list(
         client,
         objectType,
@@ -33,7 +30,7 @@ export default class Simulate extends Command {
         flags.recursive
       )
       cli.action.stop("Done")
-      await processObjects(client, objects, {
+      await main.processObjects(objects, {
         test: true,
         transport: flags.transport
       })

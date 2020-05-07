@@ -5,6 +5,9 @@ export interface ConnDetails {
   baseUrl: string
   userName: string
   password: string
+  client?: string
+  certPath?: string
+  nosslvalidation?: boolean
 }
 
 const CONNECTIONS = "Connections"
