@@ -6,7 +6,11 @@ import { list } from "../lib/abap"
 export default class List extends Command {
   static description = "List objects that would be updated"
 
-  static examples = ["$ abapPretty list MYCONN DEVC/K ZMYPACKAGE"]
+  static examples = [
+    "$ abapPretty list -c MYCONN DEVC/K ZMYPACKAGE",
+    "$ abapPretty list -h host -P port -u user -p password DEVC/K ZMYPACKAGE",
+    `$ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty list DEVC/K ZMYPACKAGE'`
+  ]
 
   static flags = COMMONFLAGS
 

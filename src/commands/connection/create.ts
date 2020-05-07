@@ -5,7 +5,7 @@ export default class Login extends Command {
   static description = "Store the server and user details"
 
   static examples = [
-    "$ abapPretty login MYCONN http://myserver:8000 myuser mypass"
+    "$ abapPretty connection:create MYCONN https://myserver:44300 myuser mypass --certPath=/secret/cert"
   ]
 
   static args = [

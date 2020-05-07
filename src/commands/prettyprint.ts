@@ -9,7 +9,11 @@ export default class Pretty extends Command {
   static description =
     "Pretty prints every supported include file in the selected range"
 
-  static examples = ["$ abapPretty prettyprint MYCONN DEVC/K ZMYPACKAGE"]
+  static examples = [
+    "$ abapPretty prettyprint -c MYCONN DEVC/K ZMYPACKAGE",
+    "$ abapPretty prettyprint -h host -P port -u user -p password DEVC/K ZMYPACKAGE -t transportnumber",
+    `$ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty prettyprint DEVC/K ZMYPACKAGE'`
+  ]
 
   static flags = ALLCOMMONFLAGS
 

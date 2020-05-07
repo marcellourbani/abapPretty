@@ -61,9 +61,6 @@ Lists stored connection details
 ```
 USAGE
   $ abapPretty connection
-
-EXAMPLE
-  $ apapPretty connection
 ```
 
 _See code: [src/commands/connection/index.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/connection/index.ts)_
@@ -88,7 +85,7 @@ OPTIONS
   --certPath=certPath        Path to SSL certificate
 
 EXAMPLE
-  $ abapPretty login MYCONN http://myserver:8000 myuser mypass
+  $ abapPretty connection:create MYCONN https://myserver:44300 myuser mypass --certPath=/secret/cert
 ```
 
 _See code: [src/commands/connection/create.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/connection/create.ts)_
@@ -134,8 +131,10 @@ OPTIONS
   --certPath=certPath                            Path to SSL certificate
   --[no-]ssl                                     use SSL (default)
 
-EXAMPLE
-  $ abapPretty list MYCONN DEVC/K ZMYPACKAGE
+EXAMPLES
+  $ abapPretty list -c MYCONN DEVC/K ZMYPACKAGE
+  $ abapPretty list -h host -P port -u user -p password DEVC/K ZMYPACKAGE
+  $ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty list DEVC/K ZMYPACKAGE'
 ```
 
 _See code: [src/commands/list.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/list.ts)_
@@ -165,8 +164,10 @@ OPTIONS
   --certPath=certPath                            Path to SSL certificate
   --[no-]ssl                                     use SSL (default)
 
-EXAMPLE
-  $ abapPretty prettyprint MYCONN DEVC/K ZMYPACKAGE
+EXAMPLES
+  $ abapPretty prettyprint -c MYCONN DEVC/K ZMYPACKAGE
+  $ abapPretty prettyprint -h host -P port -u user -p password DEVC/K ZMYPACKAGE -t transportnumber
+  $ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty prettyprint DEVC/K ZMYPACKAGE'
 ```
 
 _See code: [src/commands/prettyprint.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/prettyprint.ts)_
@@ -196,8 +197,10 @@ OPTIONS
   --certPath=certPath                            Path to SSL certificate
   --[no-]ssl                                     use SSL (default)
 
-EXAMPLE
-  $ abapPretty simulate MYCONN DEVC/K ZMYPACKAGE
+EXAMPLES
+  $ abapPretty siulate -c MYCONN DEVC/K ZMYPACKAGE
+  $ abapPretty siulate -h host -P port -u user -p password DEVC/K ZMYPACKAGE
+  $ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty siulate DEVC/K ZMYPACKAGE'
 ```
 
 _See code: [src/commands/simulate.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/simulate.ts)_

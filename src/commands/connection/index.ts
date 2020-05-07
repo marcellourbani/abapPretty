@@ -5,8 +5,6 @@ import { cli } from "cli-ux"
 export default class LoginList extends Command {
   static description = "Lists stored connection details"
 
-  static examples = ["$ apapPretty connection"]
-
   async run() {
     try {
       const connections = getConnections()
