@@ -35,7 +35,7 @@ $ npm install -g abappretty
 $ abapPretty COMMAND
 running command...
 $ abapPretty (-v|--version|version)
-abappretty/0.0.2 linux-x64 node-v12.16.1
+abappretty/0.1.0 linux-x64 node-v12.16.1
 $ abapPretty --help [COMMAND]
 USAGE
   $ abapPretty COMMAND
@@ -66,7 +66,7 @@ EXAMPLE
   $ apapPretty connection
 ```
 
-_See code: [src/commands/connection/index.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.2/src/commands/connection/index.ts)_
+_See code: [src/commands/connection/index.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/connection/index.ts)_
 
 ## `abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`
 
@@ -82,11 +82,16 @@ ARGUMENTS
   USERNAME  Username
   PASSWORD  User password. If not set will be asked on use
 
+OPTIONS
+  -C, --client=client        SAP client to connect to
+  -s, --skip-ssl-validation  Don't validate SSL certificate - DANGEROUS
+  --certPath=certPath        Path to SSL certificate
+
 EXAMPLE
   $ abapPretty login MYCONN http://myserver:8000 myuser mypass
 ```
 
-_See code: [src/commands/connection/create.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.2/src/commands/connection/create.ts)_
+_See code: [src/commands/connection/create.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/connection/create.ts)_
 
 ## `abapPretty help [COMMAND]`
 
@@ -119,21 +124,21 @@ ARGUMENTS
 
 OPTIONS
   -C, --client=client                            SAP client to connect to
-  -P, --certpath=certpath                        Path to SSL certificate
   -P, --port=port                                Port to connect to
   -c, --connectionId=connectionId                connection ID
   -h, --ashost=ashost                            SAP hostname
-  -n, --no-ssl=no-ssl                            Don't use SSL
   -p, --password=password                        Password
   -r, --recursive                                Expand subpackages
   -s, --skip-ssl-validation=skip-ssl-validation  Don't validate SSL certificate - DANGEROUS
   -u, --user=user                                Username
+  --certPath=certPath                            Path to SSL certificate
+  --[no-]ssl                                     use SSL (default)
 
 EXAMPLE
   $ abapPretty list MYCONN DEVC/K ZMYPACKAGE
 ```
 
-_See code: [src/commands/list.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.2/src/commands/list.ts)_
+_See code: [src/commands/list.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/list.ts)_
 
 ## `abapPretty prettyprint OBJECTTYPE OBJECTNAME`
 
@@ -149,22 +154,22 @@ ARGUMENTS
 
 OPTIONS
   -C, --client=client                            SAP client to connect to
-  -P, --certpath=certpath                        Path to SSL certificate
   -P, --port=port                                Port to connect to
   -c, --connectionId=connectionId                connection ID
   -h, --ashost=ashost                            SAP hostname
-  -n, --no-ssl=no-ssl                            Don't use SSL
   -p, --password=password                        Password
   -r, --recursive                                Expand subpackages
   -s, --skip-ssl-validation=skip-ssl-validation  Don't validate SSL certificate - DANGEROUS
   -t, --transport=transport                      Transport
   -u, --user=user                                Username
+  --certPath=certPath                            Path to SSL certificate
+  --[no-]ssl                                     use SSL (default)
 
 EXAMPLE
   $ abapPretty prettyprint MYCONN DEVC/K ZMYPACKAGE
 ```
 
-_See code: [src/commands/prettyprint.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.2/src/commands/prettyprint.ts)_
+_See code: [src/commands/prettyprint.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/prettyprint.ts)_
 
 ## `abapPretty simulate OBJECTTYPE OBJECTNAME`
 
@@ -180,22 +185,22 @@ ARGUMENTS
 
 OPTIONS
   -C, --client=client                            SAP client to connect to
-  -P, --certpath=certpath                        Path to SSL certificate
   -P, --port=port                                Port to connect to
   -c, --connectionId=connectionId                connection ID
   -h, --ashost=ashost                            SAP hostname
-  -n, --no-ssl=no-ssl                            Don't use SSL
   -p, --password=password                        Password
   -r, --recursive                                Expand subpackages
   -s, --skip-ssl-validation=skip-ssl-validation  Don't validate SSL certificate - DANGEROUS
   -t, --transport=transport                      Transport
   -u, --user=user                                Username
+  --certPath=certPath                            Path to SSL certificate
+  --[no-]ssl                                     use SSL (default)
 
 EXAMPLE
   $ abapPretty simulate MYCONN DEVC/K ZMYPACKAGE
 ```
 
-_See code: [src/commands/simulate.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.2/src/commands/simulate.ts)_
+_See code: [src/commands/simulate.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/simulate.ts)_
 
 ## `abapPretty supportedtypes`
 
@@ -209,5 +214,5 @@ EXAMPLE
   $ abapPretty supportedtypes
 ```
 
-_See code: [src/commands/supportedtypes.ts](https://github.com/marcellourbani/abapPretty/blob/v0.0.2/src/commands/supportedtypes.ts)_
+_See code: [src/commands/supportedtypes.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.0/src/commands/supportedtypes.ts)_
 <!-- commandsstop -->
