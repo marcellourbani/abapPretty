@@ -8,6 +8,7 @@
   },
   "bugs": "https://github.com/marcellourbani/abapPretty/issues",
   "dependencies": {
+    "@abaplint/core": "^2.32.10",
     "@oclif/command": "^1.5.20",
     "@oclif/config": "^1.15.1",
     "@oclif/plugin-help": "^2.2.3",

@@ -24,6 +24,17 @@ export interface AbapInclude {
   metaUrl: string
   sourceUrl: string
 }
+const extensions = new Map([
+  ["CLAS/I", ".clas"],
+  ["FUGR/FF", ".fugr"],
+  ["FUGR/I", ".prog"],
+  ["INTF/OI", ".intf"],
+  ["PROG/I", ".prog"],
+  ["PROG/P", ".prog"]
+])
+export const includeName = (i: AbapInclude) =>
+  `${i.name}${extensions.get(i.type) || ""}.abap`
+
 const follow = (base: string, next: string) => {
   if (next.startsWith("/")) return next
   if (next.startsWith("./")) {
@@ -90,6 +101,8 @@ export async function list(
   notifier: Notifier,
   recursive = false
 ) {
+  type = type?.toUpperCase()
+  name = name?.toUpperCase()
   if (!supportedType(type)) throw new Error(`Type ${type} is not supported`)
 
   const list = await client.statelessClone.searchObject(name, type)

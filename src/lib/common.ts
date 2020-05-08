@@ -14,7 +14,7 @@ export interface LoginData {
   "skip-ssl-validation"?: string
   certPath?: string
 }
-
+export const ABAPLINT_DEFAULT = "<default>"
 export const RECURSIVEFLAG = {
   recursive: flags.boolean({
     char: "r",
@@ -23,11 +23,16 @@ export const RECURSIVEFLAG = {
   })
 }
 
-export const TRANSPORT = {
+const PPONLYFLAGS = {
   transport: flags.string({
     char: "t",
     description: "Transport",
     default: ""
+  }),
+  abaplint: flags.string({
+    char: "a",
+    description: `Format using abapLint config file.\nIf left blank or set to ${ABAPLINT_DEFAULT} the default configuration will be used`,
+    parse: x => x || ABAPLINT_DEFAULT
   })
 }
 
@@ -77,7 +82,7 @@ const LOGINOPTS = {
 export const COMMONFLAGS = { ...RECURSIVEFLAG, ...LOGINOPTS }
 export const ALLCOMMONFLAGS = {
   ...COMMONFLAGS,
-  ...TRANSPORT
+  ...PPONLYFLAGS
 }
 export const COMMONARGS = [
   {

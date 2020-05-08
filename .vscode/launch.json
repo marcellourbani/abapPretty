@@ -35,7 +35,7 @@
       "name": "simulate FG",
       "smartStep": true,
       "program": "${workspaceFolder}/bin/run",
-      "args": ["simulate", "-c", "NPL", "FUGR/F", "ZABAPGIT_PARALLEL"],
+      "args": ["simulate", "-c", "NPL", "FUGR/F", "ZABAPGIT_PARALLEL", "-a="],
       "skipFiles": ["<node_internals>/**"]
     },
     {
@@ -65,15 +65,15 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "generated function group",
+      "name": "some error",
       "smartStep": true,
       "program": "${workspaceFolder}/bin/run",
       "args": [
         "prettyprint",
         "-c",
         "d1_3",
-        "FUGR/F",
-        "/BTI/TE_AUTHGROUPS",
+        "PROG/I",
+        "/BTI/TE_RTRANS_LOCATIONS_SUB",
         "-t",
         "L01K900010"
       ],

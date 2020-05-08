@@ -8,6 +8,11 @@ import {
   AdtLock,
   inactiveObjectsInResults
 } from "abap-adt-api"
+import { ABAPLINT_DEFAULT } from "./lib/common"
+import {
+  loadAbapLintConfig,
+  abapLintprettyPrint
+} from "./lib/abaplintprettyprint"
 const tick = green("\u2713")
 
 export interface Options {
@@ -19,14 +24,16 @@ interface Status {
   currentInclude?: AbapInclude
   processedObjects: number
   processedIncludes: number
+  writtenIncludes: number
 }
 export class Main {
   // eslint-disable-next-line no-useless-constructor
-  constructor(private client: ADTClient) {}
+  constructor(private client: ADTClient, public abapLint?: string) {}
 
   private readonly status: Status = {
     processedIncludes: 0,
-    processedObjects: 0
+    processedObjects: 0,
+    writtenIncludes: 0
   }
 
   private async tryLock(url: string) {
@@ -104,6 +111,12 @@ export class Main {
         )
     }
     cli.action.start(`\t${tick}${key}`)
+    this.status.writtenIncludes++
+  }
+
+  private format(incl: AbapInclude, source: string) {
+    if (this.abapLint) return abapLintprettyPrint(incl, source)
+    return this.client.statelessClone.prettyPrinter(source)
   }
 
   private async processInclude(incl: AbapInclude, options: Options) {
@@ -114,7 +127,7 @@ export class Main {
       incl.sourceUrl
     )
     cli.action.start(`\t${key}`, ` Formatting...`)
-    const formatted = await this.client.statelessClone.prettyPrinter(source)
+    const formatted = await this.format(incl, source)
     if (formatted === source) cli.action.start(`\t${tick}${key} (unchanged)`)
     else {
       cli.action.start(`\t${key}`, ` Locking...`)
@@ -129,7 +142,15 @@ export class Main {
     this.status.currentInclude = undefined
   }
 
+  private stats(objnum: number) {
+    cli.log(
+      `${this.status.processedObjects} of ${objnum} objects / ${this.status.processedIncludes} includes processed ${this.status.writtenIncludes} written`
+    )
+  }
+
   public async processObjects(objects: AbapObject[], options: Options) {
+    if (this.abapLint && this.abapLint !== ABAPLINT_DEFAULT)
+      await loadAbapLintConfig(this.abapLint)
     this.client.stateful = session_types.stateful
     try {
       for (const o of objects) {
@@ -142,14 +163,16 @@ export class Main {
         this.status.processedObjects++
       }
     } catch (error) {
+      cli.action.stop("failed!")
+      const { currentInclude, currentObject } = this.status
+      cli.log(`Last object ${currentObject?.type} ${currentObject?.name}`)
+      if (currentInclude)
+        cli.log(`Last include ${currentInclude.type} ${currentInclude.name}`)
+      throw error
+    } finally {
+      this.stats(objects.length)
       this.client.stateful = session_types.stateless
       await this.client.dropSession()
-      const { currentInclude, currentObject } = this.status
-      const ref = currentInclude
-        ? `include ${currentInclude.type} ${currentInclude.name}`
-        : `object ${currentObject?.type} ${currentObject?.name}`
-      cli.action.start(`Error processing ${ref}`)
-      throw error
     }
   }
 }

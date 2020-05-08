@@ -25,7 +25,7 @@ export default class Simulate extends Command {
     try {
       const { objectType = "", objectName = "" } = args
       const client = await getClient(flags)
-      const main = new Main(client)
+      const main = new Main(client, flags.abaplint)
       const objects = await list(
         client,
         objectType,
