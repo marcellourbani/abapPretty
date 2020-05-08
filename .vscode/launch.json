@@ -44,13 +44,7 @@
       "name": "format include",
       "smartStep": true,
       "program": "${workspaceFolder}/bin/run",
-      "args": [
-        "prettyprint",
-        "-c",
-        "NPL",
-        "PROG/I",
-        "ZDEMO_EXCEL_OUTPUTOPT_INCL"
-      ],
+      "args": ["prettyprint", "-c", "NPL", "-f", "foo"],
       "skipFiles": ["<node_internals>/**"]
     },
     {

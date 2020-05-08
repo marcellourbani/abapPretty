@@ -59,7 +59,7 @@ const canProcess = (n: Node) =>
   n.OBJECT_NAME &&
   treatableTypes.find(t => t.type === n.OBJECT_TYPE)
 
-const supportedType = (type: string) =>
+export const supportedType = (type: string) =>
   !!supportedTypes.find(t => t.type === type)
 
 const fromNode = (n: Node) => ({
@@ -103,13 +103,13 @@ export async function list(
 ) {
   type = type?.toUpperCase()
   name = name?.toUpperCase()
-  if (!supportedType(type)) throw new Error(`Type ${type} is not supported`)
+  if (!supportedType(type)) cli.error(`Type ${type} is not supported`)
 
   const list = await client.statelessClone.searchObject(name, type)
   const found = list.find(
     c => c["adtcore:type"] === type && c["adtcore:name"] === name
   )
-  if (!found) throw new Error(`Object ${type} ${name} not found`)
+  if (!found) cli.error(`Object ${type} ${name} not found`)
   switch (type) {
     case PACKAGE:
       return expandPackage(client, name, notifier, recursive)

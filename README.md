@@ -11,10 +11,15 @@ ABAP pretty printer - Command line utility to format ABAP code on a server
 | --------------------------------------------------------------------------------------------------------------------- |
 
 
+| If your system is too old you might need to install [this plugin](https://github.com/marcellourbani/abapfs_extensions) |
+| ---------------------------------------------------------------------------------------------------------------------- |
+
+
 <!-- toc -->
-* [abapPretty](#abappretty)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [abapPretty](#abappretty)
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
 
 ![prettyprint](https://user-images.githubusercontent.com/2453277/81149759-bbece980-8f76-11ea-8a6c-55acf6a2a90f.gif)
@@ -30,6 +35,7 @@ Into this:
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g abappretty
 $ abapPretty COMMAND
@@ -41,18 +47,23 @@ USAGE
   $ abapPretty COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-* [`abapPretty connection`](#abappretty-connection)
-* [`abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`](#abappretty-connectioncreate-id-baseurl-username-password)
-* [`abapPretty help [COMMAND]`](#abappretty-help-command)
-* [`abapPretty list OBJECTTYPE OBJECTNAME`](#abappretty-list-objecttype-objectname)
-* [`abapPretty prettyprint OBJECTTYPE OBJECTNAME`](#abappretty-prettyprint-objecttype-objectname)
-* [`abapPretty simulate OBJECTTYPE OBJECTNAME`](#abappretty-simulate-objecttype-objectname)
-* [`abapPretty supportedtypes`](#abappretty-supportedtypes)
+
+- [abapPretty](#abappretty)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`abapPretty connection`](#abappretty-connection)
+  - [`abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`](#abappretty-connectioncreate-id-baseurl-username-password)
+  - [`abapPretty help [COMMAND]`](#abappretty-help-command)
+  - [`abapPretty list OBJECTTYPE OBJECTNAME`](#abappretty-list-objecttype-objectname)
+  - [`abapPretty prettyprint OBJECTTYPE OBJECTNAME`](#abappretty-prettyprint-objecttype-objectname)
+  - [`abapPretty simulate OBJECTTYPE OBJECTNAME`](#abappretty-simulate-objecttype-objectname)
+  - [`abapPretty supportedtypes`](#abappretty-supportedtypes)
 
 ## `abapPretty connection`
 
@@ -218,4 +229,5 @@ EXAMPLE
 ```
 
 _See code: [src/commands/supportedtypes.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.1/src/commands/supportedtypes.ts)_
+
 <!-- commandsstop -->

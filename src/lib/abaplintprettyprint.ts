@@ -24,7 +24,7 @@ export async function loadAbapLintConfig(path: string) {
     const source = readFileSync(path).toString()
     config = new Config(source)
   } catch (error) {
-    throw new Error(`Error loading config file ${path}: ${error.toString()}`)
+    cli.error(`Error loading config file ${path}: ${error.toString()}`)
   }
 }
 
@@ -32,7 +32,6 @@ export function abapLintprettyPrint(include: AbapInclude, source: string) {
   const name = includeName(include)
   const f = parse(name, source)
   const result = new PrettyPrinter(f, config).run()
-  if (source && !result)
-    throw new Error(`Abaplint formatting failed for ${name}`)
+  if (source && !result) cli.error(`Abaplint formatting failed for ${name}`)
   return result
 }

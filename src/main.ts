@@ -1,18 +1,25 @@
 import { cli } from "cli-ux"
 import { green } from "chalk"
-
-import { expand, AbapObject, AbapInclude } from "./lib/abap"
+import {
+  expand,
+  AbapObject,
+  AbapInclude,
+  list,
+  supportedType
+} from "./lib/abap"
 import {
   ADTClient,
   session_types,
   AdtLock,
   inactiveObjectsInResults
 } from "abap-adt-api"
-import { ABAPLINT_DEFAULT } from "./lib/common"
+import { ABAPLINT_DEFAULT, ListOptions } from "./lib/common"
 import {
   loadAbapLintConfig,
   abapLintprettyPrint
 } from "./lib/abaplintprettyprint"
+import chalk = require("chalk")
+import { readFileSync } from "fs"
 const tick = green("\u2713")
 
 export interface Options {
@@ -51,17 +58,17 @@ export class Main {
 
   private validateTransport(lock: AdtLock, key: string, transport?: string) {
     if (lock.IS_LOCAL && transport)
-      throw new Error(`Object ${key} is local, can't use ${transport}`)
+      cli.error(`Object ${key} is local, can't use ${transport}`)
 
     if (!lock.IS_LOCAL && !transport)
-      throw new Error(
+      cli.error(
         `Object ${key} requires a transport ${
           lock.CORRNR ? `(locked in ${lock.CORRNR})` : ""
         }`
       )
 
     if (transport !== lock.CORRNR && !lock.IS_LOCAL && lock.CORRNR)
-      throw new Error(
+      cli.error(
         `Object ${key} locked in transport ${lock.CORRNR} can't use ${transport}`
       )
   }
@@ -90,7 +97,7 @@ export class Main {
     { test, transport }: Options
   ) {
     const key = `${incl.type} ${incl.name}`
-    if (!lock.LOCK_HANDLE) throw new Error(`Failed to lock ${key}`)
+    if (!lock.LOCK_HANDLE) cli.error(`Failed to lock ${key}`)
     this.validateTransport(lock, key, transport)
     cli.action.start(`\t${key}`, ` Writing...`)
     if (!test)
@@ -106,9 +113,7 @@ export class Main {
     if (!test) {
       const active = await this.activate(incl)
       if (active.success === false)
-        throw new Error(
-          active.messages[0]?.shortText || `Failed to activate ${key}`
-        )
+        cli.error(active.messages[0]?.shortText || `Failed to activate ${key}`)
     }
     cli.action.start(`\t${tick}${key}`)
     this.status.writtenIncludes++
@@ -143,9 +148,8 @@ export class Main {
   }
 
   private stats(objnum: number) {
-    cli.log(
-      `${this.status.processedObjects} of ${objnum} objects / ${this.status.processedIncludes} includes processed ${this.status.writtenIncludes} written`
-    )
+    const msg = `\n${this.status.processedObjects} of ${objnum} objects / ${this.status.processedIncludes} includes processed ${this.status.writtenIncludes} written\n`
+    cli.log(chalk.bold(msg))
   }
 
   public async processObjects(objects: AbapObject[], options: Options) {
@@ -174,5 +178,45 @@ export class Main {
       this.client.stateful = session_types.stateless
       await this.client.dropSession()
     }
+  }
+
+  public async list(type: string, name: string, options: ListOptions) {
+    const { file, recursive } = options
+    if ((name || type) && file)
+      cli.error(
+        "Can't specify an object name or type and a list file at the same time"
+      )
+
+    if (file) {
+      const isHeader = (l: string, i: number) => {
+        return i === 0 && !l.match(/\//)
+      }
+      const objects = readFileSync(file)
+        .toString()
+        .split("\n")
+        .filter((l, i) => l && !isHeader(l, i))
+        .map(x => x.split(/\s+/, 3))
+        .map(([type, name, url], i) => {
+          if (!supportedType(type))
+            cli.error(
+              `Objects of type ${type} are not supportes near line ${i} of file ${file}`
+            )
+          return { type, name, url }
+        })
+
+      return objects
+    }
+
+    if (!name || !type)
+      cli.error(`Object type and name required unless a list file is provided`)
+    const objects = await list(
+      this.client,
+      type,
+      name,
+      message => cli.action.start(message),
+      recursive
+    )
+    cli.action.stop("Done")
+    return objects
   }
 }

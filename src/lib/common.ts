@@ -2,6 +2,7 @@ import { flags } from "@oclif/command"
 import { getConnection } from "./connections"
 import { cli } from "cli-ux"
 import { ADTClient, createSSLConfig } from "abap-adt-api"
+import chalk = require("chalk")
 
 export interface LoginData {
   connectionId?: string
@@ -14,7 +15,14 @@ export interface LoginData {
   "skip-ssl-validation"?: string
   certPath?: string
 }
+
+export interface ListOptions {
+  recursive: boolean
+  file: string
+}
+
 export const ABAPLINT_DEFAULT = "<default>"
+
 export const RECURSIVEFLAG = {
   recursive: flags.boolean({
     char: "r",
@@ -33,6 +41,11 @@ const PPONLYFLAGS = {
     char: "a",
     description: `Format using abapLint config file.\nIf left blank or set to ${ABAPLINT_DEFAULT} the default configuration will be used`,
     parse: x => x || ABAPLINT_DEFAULT
+  }),
+  file: flags.string({
+    char: "f",
+    description: "File with a list of objects to process",
+    default: ""
   })
 }
 
@@ -84,24 +97,25 @@ export const ALLCOMMONFLAGS = {
   ...COMMONFLAGS,
   ...PPONLYFLAGS
 }
+
 export const COMMONARGS = [
   {
     name: "objectType",
-    required: true,
+    required: false,
+    default: "",
     description: "Base object type"
   },
   {
     name: "objectName",
-    required: true,
+    required: false,
+    default: "",
     description: "Base object name"
   }
 ]
 async function getClientInt(data: LoginData) {
   if (data.ashost && data.port) {
     if (!data.user || !data.password)
-      throw new Error(
-        "User and password are mandatory unless using connectionIds"
-      )
+      cli.error("User and password are mandatory unless using connectionIds")
 
     const nossl = !data.ssl || process.env.SAP_SSL?.match(/^no|off|false$/i)
     const nosslValid =
@@ -117,9 +131,9 @@ async function getClientInt(data: LoginData) {
     )
   }
 
-  if (!data.connectionId) throw new Error("No connection details provided")
+  if (!data.connectionId) cli.error("No connection details provided")
   const conn = getConnection(data.connectionId)
-  if (!conn) throw new Error(`Invalid connection id ${data.connectionId}`)
+  if (!conn) cli.error(`Invalid connection id ${data.connectionId}`)
   const password =
     data.password ||
     conn.password ||
