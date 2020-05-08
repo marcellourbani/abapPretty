@@ -1,5 +1,5 @@
 import { Command } from "@oclif/command"
-import { getClient, ALLCOMMONFLAGS, COMMONARGS, logError } from "../lib/common"
+import { getClient, ALLCOMMONFLAGS, COMMONARGS } from "../lib/common"
 
 import { Main } from "../main"
 

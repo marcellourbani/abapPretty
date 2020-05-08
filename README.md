@@ -16,10 +16,9 @@ ABAP pretty printer - Command line utility to format ABAP code on a server
 
 
 <!-- toc -->
-
-- [abapPretty](#abappretty)
-- [Usage](#usage)
-- [Commands](#commands)
+* [abapPretty](#abappretty)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 ![prettyprint](https://user-images.githubusercontent.com/2453277/81149759-bbece980-8f76-11ea-8a6c-55acf6a2a90f.gif)
@@ -35,35 +34,29 @@ Into this:
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g abappretty
 $ abapPretty COMMAND
 running command...
 $ abapPretty (-v|--version|version)
-abappretty/0.1.1 linux-x64 node-v12.16.1
+abappretty/0.1.2 linux-x64 node-v12.16.1
 $ abapPretty --help [COMMAND]
 USAGE
   $ abapPretty COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
-- [abapPretty](#abappretty)
-- [Usage](#usage)
-- [Commands](#commands)
-  - [`abapPretty connection`](#abappretty-connection)
-  - [`abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`](#abappretty-connectioncreate-id-baseurl-username-password)
-  - [`abapPretty help [COMMAND]`](#abappretty-help-command)
-  - [`abapPretty list OBJECTTYPE OBJECTNAME`](#abappretty-list-objecttype-objectname)
-  - [`abapPretty prettyprint OBJECTTYPE OBJECTNAME`](#abappretty-prettyprint-objecttype-objectname)
-  - [`abapPretty simulate OBJECTTYPE OBJECTNAME`](#abappretty-simulate-objecttype-objectname)
-  - [`abapPretty supportedtypes`](#abappretty-supportedtypes)
+* [`abapPretty connection`](#abappretty-connection)
+* [`abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`](#abappretty-connectioncreate-id-baseurl-username-password)
+* [`abapPretty help [COMMAND]`](#abappretty-help-command)
+* [`abapPretty list [OBJECTTYPE] [OBJECTNAME]`](#abappretty-list-objecttype-objectname)
+* [`abapPretty prettyprint [OBJECTTYPE] [OBJECTNAME]`](#abappretty-prettyprint-objecttype-objectname)
+* [`abapPretty simulate [OBJECTTYPE] [OBJECTNAME]`](#abappretty-simulate-objecttype-objectname)
+* [`abapPretty supportedtypes`](#abappretty-supportedtypes)
 
 ## `abapPretty connection`
 
@@ -74,7 +67,7 @@ USAGE
   $ abapPretty connection
 ```
 
-_See code: [src/commands/connection/index.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.1/src/commands/connection/index.ts)_
+_See code: [src/commands/connection/index.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.2/src/commands/connection/index.ts)_
 
 ## `abapPretty connection:create ID BASEURL USERNAME [PASSWORD]`
 
@@ -99,7 +92,7 @@ EXAMPLE
   $ abapPretty connection:create MYCONN https://myserver:44300 myuser mypass --certPath=/secret/cert
 ```
 
-_See code: [src/commands/connection/create.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.1/src/commands/connection/create.ts)_
+_See code: [src/commands/connection/create.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.2/src/commands/connection/create.ts)_
 
 ## `abapPretty help [COMMAND]`
 
@@ -118,13 +111,13 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
 
-## `abapPretty list OBJECTTYPE OBJECTNAME`
+## `abapPretty list [OBJECTTYPE] [OBJECTNAME]`
 
 List objects that would be updated
 
 ```
 USAGE
-  $ abapPretty list OBJECTTYPE OBJECTNAME
+  $ abapPretty list [OBJECTTYPE] [OBJECTNAME]
 
 ARGUMENTS
   OBJECTTYPE  Base object type
@@ -148,15 +141,15 @@ EXAMPLES
   $ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty list DEVC/K ZMYPACKAGE'
 ```
 
-_See code: [src/commands/list.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.1/src/commands/list.ts)_
+_See code: [src/commands/list.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.2/src/commands/list.ts)_
 
-## `abapPretty prettyprint OBJECTTYPE OBJECTNAME`
+## `abapPretty prettyprint [OBJECTTYPE] [OBJECTNAME]`
 
 Pretty prints every supported include file in the selected range
 
 ```
 USAGE
-  $ abapPretty prettyprint OBJECTTYPE OBJECTNAME
+  $ abapPretty prettyprint [OBJECTTYPE] [OBJECTNAME]
 
 ARGUMENTS
   OBJECTTYPE  Base object type
@@ -165,14 +158,29 @@ ARGUMENTS
 OPTIONS
   -C, --client=client                            SAP client to connect to
   -P, --port=port                                Port to connect to
+
+  -a, --abaplint=abaplint                        Format using abapLint config file.
+                                                 If left blank or set to <default> the default configuration will be
+                                                 used
+
   -c, --connectionId=connectionId                connection ID
+
+  -f, --file=file                                File with a list of objects to process
+
   -h, --ashost=ashost                            SAP hostname
+
   -p, --password=password                        Password
+
   -r, --recursive                                Expand subpackages
+
   -s, --skip-ssl-validation=skip-ssl-validation  Don't validate SSL certificate - DANGEROUS
+
   -t, --transport=transport                      Transport
+
   -u, --user=user                                Username
+
   --certPath=certPath                            Path to SSL certificate
+
   --[no-]ssl                                     use SSL (default)
 
 EXAMPLES
@@ -181,15 +189,15 @@ EXAMPLES
   $ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty prettyprint DEVC/K ZMYPACKAGE'
 ```
 
-_See code: [src/commands/prettyprint.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.1/src/commands/prettyprint.ts)_
+_See code: [src/commands/prettyprint.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.2/src/commands/prettyprint.ts)_
 
-## `abapPretty simulate OBJECTTYPE OBJECTNAME`
+## `abapPretty simulate [OBJECTTYPE] [OBJECTNAME]`
 
 Simulate updates: perform all actions except writing the formatted source and activating
 
 ```
 USAGE
-  $ abapPretty simulate OBJECTTYPE OBJECTNAME
+  $ abapPretty simulate [OBJECTTYPE] [OBJECTNAME]
 
 ARGUMENTS
   OBJECTTYPE  Base object type
@@ -198,14 +206,29 @@ ARGUMENTS
 OPTIONS
   -C, --client=client                            SAP client to connect to
   -P, --port=port                                Port to connect to
+
+  -a, --abaplint=abaplint                        Format using abapLint config file.
+                                                 If left blank or set to <default> the default configuration will be
+                                                 used
+
   -c, --connectionId=connectionId                connection ID
+
+  -f, --file=file                                File with a list of objects to process
+
   -h, --ashost=ashost                            SAP hostname
+
   -p, --password=password                        Password
+
   -r, --recursive                                Expand subpackages
+
   -s, --skip-ssl-validation=skip-ssl-validation  Don't validate SSL certificate - DANGEROUS
+
   -t, --transport=transport                      Transport
+
   -u, --user=user                                Username
+
   --certPath=certPath                            Path to SSL certificate
+
   --[no-]ssl                                     use SSL (default)
 
 EXAMPLES
@@ -214,7 +237,7 @@ EXAMPLES
   $ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty siulate DEVC/K ZMYPACKAGE'
 ```
 
-_See code: [src/commands/simulate.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.1/src/commands/simulate.ts)_
+_See code: [src/commands/simulate.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.2/src/commands/simulate.ts)_
 
 ## `abapPretty supportedtypes`
 
@@ -228,6 +251,5 @@ EXAMPLE
   $ abapPretty supportedtypes
 ```
 
-_See code: [src/commands/supportedtypes.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.1/src/commands/supportedtypes.ts)_
-
+_See code: [src/commands/supportedtypes.ts](https://github.com/marcellourbani/abapPretty/blob/v0.1.2/src/commands/supportedtypes.ts)_
 <!-- commandsstop -->

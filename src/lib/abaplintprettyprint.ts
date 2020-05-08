@@ -1,4 +1,5 @@
 import { PrettyPrinter } from "@abaplint/core/build/src/pretty_printer/pretty_printer"
+import { cli } from "cli-ux"
 import {
   ABAPFile,
   MemoryFile,

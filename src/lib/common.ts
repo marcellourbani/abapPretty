@@ -2,7 +2,6 @@ import { flags } from "@oclif/command"
 import { getConnection } from "./connections"
 import { cli } from "cli-ux"
 import { ADTClient, createSSLConfig } from "abap-adt-api"
-import chalk = require("chalk")
 
 export interface LoginData {
   connectionId?: string

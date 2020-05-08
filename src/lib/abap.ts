@@ -1,5 +1,6 @@
 /* eslint-disable operator-linebreak */
 import { ADTClient, Node, isClassStructure } from "abap-adt-api"
+import { cli } from "cli-ux"
 
 export const PACKAGE = "DEVC/K"
 const PACKAGETYPE = { desc: "Package", type: PACKAGE }
