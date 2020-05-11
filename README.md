@@ -232,9 +232,9 @@ OPTIONS
   --[no-]ssl                                     use SSL (default)
 
 EXAMPLES
-  $ abapPretty siulate -c MYCONN DEVC/K ZMYPACKAGE
-  $ abapPretty siulate -h host -P port -u user -p password DEVC/K ZMYPACKAGE
-  $ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty siulate DEVC/K ZMYPACKAGE'
+  $ abapPretty simulate -c MYCONN DEVC/K ZMYPACKAGE
+  $ abapPretty simulate -h host -P port -u user -p password DEVC/K ZMYPACKAGE
+  $ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty simulate DEVC/K ZMYPACKAGE'
 ```
 
 _See code: [src/commands/simulate.ts](https://github.com/marcellourbani/abapPretty/blob/v0.2.0/src/commands/simulate.ts)_
