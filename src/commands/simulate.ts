@@ -8,9 +8,9 @@ export default class Simulate extends Command {
     "Simulate updates: perform all actions except writing the formatted source and activating"
 
   static examples = [
-    "$ abapPretty siulate -c MYCONN DEVC/K ZMYPACKAGE",
-    "$ abapPretty siulate -h host -P port -u user -p password DEVC/K ZMYPACKAGE",
-    `$ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty siulate DEVC/K ZMYPACKAGE'`
+    "$ abapPretty simulate -c MYCONN DEVC/K ZMYPACKAGE",
+    "$ abapPretty simulate -h host -P port -u user -p password DEVC/K ZMYPACKAGE",
+    `$ SAP_ASHOST=host SAP_PORT=port SAP_USER=user SAP_PASSWORD=bash -c 'abapPretty simulate DEVC/K ZMYPACKAGE'`
   ]
 
   static flags = ALLCOMMONFLAGS
