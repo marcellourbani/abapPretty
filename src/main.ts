@@ -201,6 +201,10 @@ export class Main {
             cli.error(
               `Objects of type ${type} are not supportes near line ${i} of file ${file}`
             )
+          if (!url)
+            cli.error(
+              `URL not specified for object ${type} ${name} in file ${file}`
+            )
           return { type, name, url }
         })
 

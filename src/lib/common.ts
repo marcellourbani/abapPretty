@@ -43,7 +43,8 @@ const PPONLYFLAGS = {
   }),
   file: flags.string({
     char: "f",
-    description: "File with a list of objects to process",
+    description:
+      "File with a list of objects to process.\n Expects space separated text file with type,name and url of each object",
     default: ""
   })
 }
