@@ -39,7 +39,7 @@ $ npm install -g abappretty
 $ abapPretty COMMAND
 running command...
 $ abapPretty (-v|--version|version)
-abappretty/0.2.2 linux-x64 node-v12.16.1
+abappretty/0.2.2 linux-x64 node-v12.18.0
 $ abapPretty --help [COMMAND]
 USAGE
   $ abapPretty COMMAND
