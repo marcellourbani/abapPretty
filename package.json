@@ -1,7 +1,7 @@
 {
   "name": "abappretty",
   "description": "ABAP pretty printer - Command line utility to format ABAP code on a server",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": "Marcello Urbani @marcellourbani",
   "bin": {
     "abapPretty": "./bin/run"
