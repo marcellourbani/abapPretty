@@ -8,7 +8,7 @@
   },
   "bugs": "https://github.com/marcellourbani/abapPretty/issues",
   "dependencies": {
-    "@abaplint/core": "^2.32.10",
+    "@abaplint/core": "^2.53.0",
     "@oclif/command": "^1.5.20",
     "@oclif/config": "^1.15.1",
     "@oclif/plugin-help": "^2.2.3",
@@ -22,7 +22,7 @@
     "@oclif/dev-cli": "^1.22.2",
     "@oclif/test": "^1.2.5",
     "@types/chai": "^4.2.11",
-    "@types/mocha": "^5.2.7",
+    "@types/mocha": "^8.0.3",
     "@types/node": "^10.17.21",
     "@types/request-debug": "^0.2.0",
     "chai": "^4.2.0",
@@ -30,7 +30,7 @@
     "eslint-config-oclif": "^3.1.0",
     "eslint-config-oclif-typescript": "^0.1.0",
     "globby": "^10.0.2",
-    "mocha": "^5.2.0",
+    "mocha": "^8.1.3",
     "nyc": "^14.1.1",
     "ts-node": "^8.9.0",
     "typescript": "^3.8.3"
