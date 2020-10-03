@@ -1,4 +1,4 @@
-import { PrettyPrinter } from "@abaplint/core/build/src/pretty_printer/pretty_printer"
+import { PrettyPrinter } from "@abaplint/core"
 import { cli } from "cli-ux"
 import {
   ABAPFile,
@@ -14,7 +14,7 @@ const isAbapObject = (o: any): o is ABAPObject => o instanceof ABAPObject
 
 function parse(name: string, abap: string): ABAPFile {
   const reg = new Registry().addFile(new MemoryFile(name, abap)).parse()
-  const objects = reg.getObjects().filter(isAbapObject)
+  const objects = [...reg.getObjects()].filter(isAbapObject)
   return objects[0]?.getABAPFiles()[0]
 }
 
